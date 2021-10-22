@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +35,9 @@ public class UserServlet extends HttpServlet {
             case "create":
                 this.toCreate(req, resp);
                 break;
+            case "edit":
+                this.toEditUser(req, resp);
+                break;
             default:
                 break;
         }
@@ -47,8 +51,13 @@ public class UserServlet extends HttpServlet {
         switch (action){
             case "create":
                 this.createUser(req, resp);
+                break;
             case "register":
                 this.register(req, resp);
+                break;
+            case "edit":
+                this.editUser(req, resp);
+                break;
         }
     }
 
@@ -75,6 +84,31 @@ public class UserServlet extends HttpServlet {
     public void toCreate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/template/admin/user/add.jsp").forward(req, resp);
+    }
+    //跳转到编辑页面
+    public void toEditUser(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        //获取用户id
+        Long id = Long.parseLong(req.getParameter("id"));
+        UserDao userDao = new UserDao();
+        User user = userDao.findById(id);
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("/WEB-INF/template/admin/user/edit.jsp").forward(req, resp);
+    }
+    //编辑用户
+    public void editUser(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        UserDao userDao = new UserDao();
+        Long id = Long.parseLong(req.getParameter("id"));
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        String email = req.getParameter("email");
+        User user = userDao.findById(id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("/WEB-INF/template/admin/user/view.jsp").forward(req, resp);
     }
 
     //删除用户

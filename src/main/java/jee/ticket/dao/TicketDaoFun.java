@@ -20,7 +20,7 @@ public class TicketDaoFun {
             //初始化数据
             for (int i = 0; i < 10; ++i) {
                 Ticket ticket = new Ticket("中山领航科技公司", 5000 * i, "办公器材" + i,
-                        "2020年新购置办公设备、电脑设备" + i, "银行汇票");
+                        "2020年新购置办公设备、电脑设备" + i, "银行汇票", "user" + 1);
 
                 ticket.setId(this.TICKET_ID_SEQUENCE);
                 TICKET_ID_SEQUENCE++;

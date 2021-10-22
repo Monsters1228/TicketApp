@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户cxxccckkcc</title>
+    <title>${user.username}</title>
 </head>
 <body>
 <%@include file="/WEB-INF/template/common/header.jsp" %>
@@ -14,7 +14,8 @@
 <p><strong>密码:</strong> ${user.password}
 <p>
 
-        <a href="">返回用户列表 </a>
+        <a href="/admin/user">返回用户列表 </a>
+    <a href="/admin/user?action=edit&id=${user.id}">编辑用户信息</a>
     <%@include file="/WEB-INF/template/common/footer.jsp" %>
 </body>
 </html>

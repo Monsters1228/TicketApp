@@ -35,7 +35,7 @@
             <td>${user.status eq 1 ? "激活": "未激活" }</td>
             <td>
                 <a href="/admin/user?action=view&id=${user.id}">详情</a>
-                <a href="/admin/user?action=view&id=${user.id}">编辑</a>
+                <a href="/admin/user?action=edit&id=${user.id}">编辑</a>
                 <a href="/admin/user?action=frozen&id=${user.id}">冻结</a>
                 <a href="/admin/user?action=active&id=${user.id}">激活</a>
                 <a href="/admin/user?action=del&id=${user.id}">删除</a>

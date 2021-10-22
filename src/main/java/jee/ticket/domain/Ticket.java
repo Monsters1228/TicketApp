@@ -19,11 +19,12 @@ public class Ticket {
     //setter  和getter方法
 
     public Ticket(String companyName, double money, String subject,
-                  String body, String type) {
+                  String body, String type, String submitter) {
         this.companyName = companyName;
         this.money = money;
         this.subject = subject;
         this.body = body;
         this.type = type;
+        this.submitter = submitter;
     }
 }

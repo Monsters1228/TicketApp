@@ -9,9 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @WebServlet("/ticket")
 public class TicketServlet extends HttpServlet {
@@ -56,6 +59,8 @@ public class TicketServlet extends HttpServlet {
     //添加票据
     public void createTicket(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        User loginUser = (User) session.getAttribute("loginUser");
         TicketDao ticketDao = new TicketDao();
         String companyName = req.getParameter("companyName");
         double money = Double.parseDouble(req.getParameter("money"));
@@ -63,7 +68,7 @@ public class TicketServlet extends HttpServlet {
         String subject = req.getParameter("subject");
         String body = req.getParameter("body");
         Date submitDate = new Date();
-        Ticket ticket = new Ticket(companyName,money,subject,body,type);
+        Ticket ticket = new Ticket(companyName,money,subject,body,type,loginUser.getUsername());
         ticket.setSubmitDate(submitDate);
         ticketDao.insert(ticket);
         // 重定向
@@ -94,10 +99,20 @@ public class TicketServlet extends HttpServlet {
         //添加代码，如果是普通用户，只能查看到自己提交的票据
         //管理员则可以看到所有票据
         //获取票据列表
+        HttpSession session = req.getSession();
+        User loginUser = (User) session.getAttribute("loginUser");
         TicketDao ticketDao = new TicketDao();
-        List list = ticketDao.findAll();
+        List<Ticket> list = ticketDao.findAll();
         System.out.println(list);
-        req.setAttribute("ticketList",list);
+        if(loginUser.getRole().equals("ROLE_ADMIN")){
+            req.setAttribute("ticketList",list);
+        } else {
+            List<Ticket> ticketList = (list.stream()
+                    .filter(i -> i.getSubmitter()
+                            .equals(loginUser.getUsername())))
+                    .collect(Collectors.toList());
+            req.setAttribute("ticketList",ticketList);
+        }
         req.getRequestDispatcher("/WEB-INF/template/ticket/list.jsp").forward(req,resp);
     }
 
