@@ -14,7 +14,7 @@
 <p><strong>密码:</strong> ${user.password}
 <p>
 
-        <a href="/admin/user">返回用户列表 </a>
+        <a href="/admin/user">返回用户列表 </a><br/>
     <a href="/admin/user?action=edit&id=${user.id}">编辑用户信息</a>
     <%@include file="/WEB-INF/template/common/footer.jsp" %>
 </body>

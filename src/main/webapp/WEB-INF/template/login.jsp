@@ -22,7 +22,8 @@
         </tr>
         <tr>
             <td></td>
-            <td><input type="submit" value="提交"></td>
+            <td><input type="submit" value="登录"></td>
+            <td><a href="/register">注册</a></td>
         </tr>
     </table>
 </form>
